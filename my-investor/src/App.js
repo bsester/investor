@@ -5,6 +5,7 @@ import {HashRouter, Route, Routes} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Home from "./Home";
+import SignIn from "./SignIn";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Header/>
           <Routes>
             <Route path = '/' exact element={<Home/>}/>
-            {/*<Route path = '/aboutme' element={<AboutMe/>}/>*/}
+            <Route path = '/signin' element={<SignIn/>}/>
             {/*<Route path = '/projects' element={<Projects/>}/>*/}
             {/*<Route path = '/education' element = {<Education/>}/>*/}
           </Routes>
