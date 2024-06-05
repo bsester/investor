@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Home from "./Home";
 import SignIn from "./SignIn";
+import CreateAccount from "./CreateAccount";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           <Routes>
             <Route path = '/' exact element={<Home/>}/>
             <Route path = '/signin' element={<SignIn/>}/>
-            {/*<Route path = '/projects' element={<Projects/>}/>*/}
+            <Route path = '/create-account' element={<CreateAccount/>}/>
             {/*<Route path = '/education' element = {<Education/>}/>*/}
           </Routes>
         </HashRouter>
