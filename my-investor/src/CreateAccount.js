@@ -87,6 +87,7 @@ function CreateAccount() {
     return (
         <div style={styles.container}>
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            <h2>Create an Account</h2>
             <Form style={styles.form} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicFirstName">
                     <Form.Label>First Name</Form.Label>
@@ -96,7 +97,6 @@ function CreateAccount() {
                         value={firstName}
                         onChange={handleFirstNameChange} />
                 </Form.Group>
-                <h2>Create an Account</h2>
 
                 <Form.Group className="mb-3" controlId="formBasicLastName">
                     <Form.Label>Last Name</Form.Label>

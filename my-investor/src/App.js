@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Home from "./Home";
 import SignIn from "./SignIn";
 import CreateAccount from "./CreateAccount";
+import Profile from "./Profile";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             <Route path = '/' exact element={<Home/>}/>
             <Route path = '/signin' element={<SignIn/>}/>
             <Route path = '/create-account' element={<CreateAccount/>}/>
-            {/*<Route path = '/education' element = {<Education/>}/>*/}
+            <Route path = '/profile' element = {<Profile/>}/>
           </Routes>
         </HashRouter>
       </div>
