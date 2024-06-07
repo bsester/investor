@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Form, Button } from 'react-bootstrap';
+import {useEffect, useState} from "react";
+import {Button, Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {auth, db, firebase} from "./firebase";
+import {useNavigate} from "react-router-dom";
 
 function CreateAccount() {
     const [firstName, setFirstName] = useState("");
@@ -9,6 +11,18 @@ function CreateAccount() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            // after user logs/signs in, redirect to profile
+            if (user) {
+                alert('Please log out before creating a new account.');
+                navigate('/');
+            }
+        });
+        return () => unsubscribe();
+    }, [navigate]);
+
 
     const handleFirstNameChange = (e) => {
         setFirstName(e.target.value);
@@ -32,7 +46,6 @@ function CreateAccount() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         // Form validation
         if (!firstName || !lastName || !email || !password || !confirmPassword) {
             setErrorMessage("Please fill in all fields.");
@@ -49,13 +62,30 @@ function CreateAccount() {
             return;
         }
 
-        // If all validations pass, you can proceed with signing up the user
         console.log("Submitting sign-up form:", { firstName, lastName, email, password });
+        auth
+            .createUserWithEmailAndPassword(email,password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                const userToken = user.getIdToken().then(token => {
+                    db.collection("users").doc(user.uid).set({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: user.email,
+                        balance: 1000,
+                        accountCreationTime: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                        .then(() => {
+                            alert(`Account Successfully Created with ${user.email}`);
+                            navigate("/"); // make this redirect to profile screen
+                        })
+                        .catch((error) => console.log(error.message));
+                }).catch(error => console.log(error.message));
+            }).catch(error => alert.log(error.message));
     };
 
     return (
         <div style={styles.container}>
-            <h2>Create an Account</h2>
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             <Form style={styles.form} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicFirstName">
@@ -66,6 +96,7 @@ function CreateAccount() {
                         value={firstName}
                         onChange={handleFirstNameChange} />
                 </Form.Group>
+                <h2>Create an Account</h2>
 
                 <Form.Group className="mb-3" controlId="formBasicLastName">
                     <Form.Label>Last Name</Form.Label>
