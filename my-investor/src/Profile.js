@@ -6,13 +6,14 @@ import {useEffect} from "react";
 function Profile(){
     const navigate = useNavigate();
     useEffect(() => {
-        return auth.onAuthStateChanged(user => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
             if (!user) {
                 alert('Please log in before accessing your profile.');
                 navigate("/signin");
             }
         });
-    })
+        return unsubscribe;
+    }, []);
     const handleLogout = () => {
         auth
             .signOut()
